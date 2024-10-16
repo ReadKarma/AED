@@ -1,2 +1,3 @@
-//@author
-//@author2
+public static void class main(String[] args) {
+    
+}
