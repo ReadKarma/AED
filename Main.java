@@ -1,3 +1,9 @@
-public static void class main(String[] args) {
-    //main
+public class Main{
+
+    public static void main(String[] args) {
+        //main
+
+    }
 }
+
+
