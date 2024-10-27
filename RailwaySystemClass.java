@@ -1,3 +1,3 @@
-public class RailwaySystemClass {
+public class RailwaySystemClass implements RailwaySystem {
     
 }

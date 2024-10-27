@@ -1,3 +1,3 @@
-public class StationClass {
+public class StationClass implements Station {
     
 }

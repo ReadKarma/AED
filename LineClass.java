@@ -1,3 +1,3 @@
-public class LineClass {
+public class LineClass implements Line {
     
 }
