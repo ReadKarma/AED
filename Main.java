@@ -25,7 +25,8 @@ public class Main{
     public static final String COMMAND_ERROR = "?????????????????"; //erro
     public static final String LINE_NO_EXIST = "Linha inexistente."; // Inserção de linha sem sucesso
     public static final String IL_SUCESS = "Inserção de linha com sucesso."; // Inserção de linha com sucesso
-    public static final String CL_SUCESS = "Remoção de linha com sucesso."; // Remoção de linha com sucesso
+    public static final String IL_FAIL = "Linha existente."; // Inserção de linha com sucesso
+    public static final String RL_SUCESS = "Remoção de linha com sucesso."; // Remoção de linha com sucesso
 
     public static void main(String[] args) {
 
@@ -42,7 +43,7 @@ public class Main{
 
                 case INSERT_LINE           -> insertLine(in, railway);
                 case REMOVE_LINE           -> removeLine(in, railway);
-                case CHECK_LINE            -> {}
+                case CHECK_LINE            -> checkLineStations(in, railway);
                 //case CHECK_STATION         -> {} //fase 2
                 case ADD_TIMETABLE         -> {}
                 case REMOVE_TIMETABLE      -> {}
@@ -72,7 +73,6 @@ public class Main{
 		return input;
 	}
 
-
     /**
 	* Retrieves the next command from the user.
 	* @param in Scanner object to read user input.
@@ -82,7 +82,7 @@ public class Main{
     {
 
         //variables
-        String lineName = in.nextLine().trim(); 
+        String lineName = in.nextLine().trim(); //read line name
         String[] station = new String[500];
         int stationCounter = 0; //number of stations in this array
 
@@ -98,7 +98,7 @@ public class Main{
         System.arraycopy(station, 0, stationArgument, 0, stationCounter);
 
         if(railway.addLine(lineName, stationArgument)) System.out.println(IL_SUCESS); //sucess
-        else System.out.println(LINE_NO_EXIST); //fail
+        else System.out.println(IL_FAIL); //fail
 
     }
 
@@ -109,13 +109,24 @@ public class Main{
 	**/
     private static void removeLine(Scanner in, RailwaySystemClass railway)
     {
-        //variables
-        String lineName = in.nextLine().trim(); 
+        String lineName = in.nextLine().trim(); //read line name
     
-        if(railway.removeLine(lineName)) System.out.println(CL_SUCESS); //sucess
+        if(railway.removeLine(lineName)) System.out.println(RL_SUCESS); //sucess
         else System.out.println(LINE_NO_EXIST); //fail
     }
     
+    /**
+	* prints the stations in a given line
+	* @param in Scanner object to read user input.
+    * @param railway RailwaySystemClass object to manage railway system
+	**/
+    private static void checkLineStations(Scanner in, RailwaySystemClass railway){
+
+        String lineName = in.nextLine().trim(); //read line name
+
+        if(!railway.checkLineStation(lineName)) System.out.println(LINE_NO_EXIST); //fail
+    }
+
 }
 
 

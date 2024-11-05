@@ -17,8 +17,31 @@ public class RailwaySystemClass implements RailwaySystem {
     }
 
     //Todas as estações da linha que não pertençam a outra linha serão eliminadas
+    //A situação de erro aplica-se quando a linha não existe no sistema.
     public boolean removeLine(String name)
     {
-        return false; //TO DO
+
+        //TO DO: remove line function
+        return existsLine(name);
+    }
+
+    public boolean checkLineStation(String name)
+    {
+
+        return existsLine(name);
+    }
+
+    
+    //---------------AUX METHODS-----------------
+
+
+    private static void printLine(String name)
+    {
+
+    }
+
+    private static boolean existsLine(String name)
+    {
+        return true;
     }
 }
