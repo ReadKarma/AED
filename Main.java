@@ -5,6 +5,7 @@ import java.util.Scanner;
 * @author Miguel Silva 68510 masa.silva@campus.fct.unl.pt
 */
 
+//perguntar: podemos usar System.arraycopy
 public class Main{
 
     //CONSTANTS
@@ -31,33 +32,31 @@ public class Main{
     public static void main(String[] args) {
 
         //variables
-        Scanner in = new Scanner(System.in);
-        RailwaySystemClass railway = new RailwaySystemClass();
-        String command;
-
-        //command interpreter
-        do
-        {
-            command = getCommand(in);
-            switch(command){
-
-                case INSERT_LINE           -> insertLine(in, railway);
-                case REMOVE_LINE           -> removeLine(in, railway);
-                case CHECK_LINE            -> checkLineStations(in, railway);
-                //case CHECK_STATION         -> {} //fase 2
-                case ADD_TIMETABLE         -> {}
-                case REMOVE_TIMETABLE      -> {}
-                case CHECK_LINE_TIMETABLES -> {}
-                //case STATION_TRAINS        -> {} //fase 2
-                case BEST_COURSE           -> {}
-                case QUIT                  -> System.out.println(QUIT_MESSAGE);
-                default                    -> System.out.println(COMMAND_ERROR);
+        try (Scanner in = new Scanner(System.in)) {
+            RailwaySystemClass railway = new RailwaySystemClass();
+            String command;
+            
+            //command interpreter
+            do
+            {
+                command = getCommand(in);
+                switch(command){
+                    
+                    case INSERT_LINE           -> insertLine(in, railway);
+                    case REMOVE_LINE           -> removeLine(in, railway);
+                    case CHECK_LINE            -> checkLineStations(in, railway);
+                    //case CHECK_STATION         -> {} //fase 2
+                    case ADD_TIMETABLE         -> addTimeTable(in, railway);
+                    case REMOVE_TIMETABLE      -> {}
+                    case CHECK_LINE_TIMETABLES -> {}
+                    //case STATION_TRAINS        -> {} //fase 2
+                    case BEST_COURSE           -> {}
+                    case QUIT                  -> System.out.println(QUIT_MESSAGE);
+                    default                    -> System.out.println(COMMAND_ERROR);
+                }
             }
+            while(!command.equals(QUIT));
         }
-        while(!command.equals(QUIT));
-
-
-        in.close();
     }
 
     /**
@@ -74,7 +73,7 @@ public class Main{
 	}
 
     /**
-	* Retrieves the next command from the user.
+	* adds a new line to the system
 	* @param in Scanner object to read user input.
     * @param railway RailwaySystemClass object to manage railway system
 	**/
@@ -82,7 +81,7 @@ public class Main{
     {
 
         //variables
-        String lineName = in.nextLine().trim(); //read line name
+        String lineName = in.nextLine().trim(); //line name
         String[] station = new String[500];
         int stationCounter = 0; //number of stations in this array
 
@@ -109,7 +108,7 @@ public class Main{
 	**/
     private static void removeLine(Scanner in, RailwaySystemClass railway)
     {
-        String lineName = in.nextLine().trim(); //read line name
+        String lineName = in.nextLine().trim(); //line name
     
         if(railway.removeLine(lineName)) System.out.println(RL_SUCESS); //sucess
         else System.out.println(LINE_NO_EXIST); //fail
@@ -122,11 +121,27 @@ public class Main{
 	**/
     private static void checkLineStations(Scanner in, RailwaySystemClass railway){
 
-        String lineName = in.nextLine().trim(); //read line name
+        String lineName = in.nextLine().trim(); //line name
 
         if(!railway.checkLineStation(lineName)) System.out.println(LINE_NO_EXIST); //fail
     }
 
+    /**
+	* adds a new train schedule to a given line
+	* @param in Scanner object to read user input.
+    * @param railway RailwaySystemClass object to manage railway system
+	**/
+    private static void addTimeTable(Scanner in, RailwaySystemClass railway)
+    {
+        //variables
+        String lineName = in.nextLine().trim(); //line name
+        int trainNumber = in.nextInt(); //train number
+        in.nextLine();
+
+        
+
+
+    }
 }
 
 

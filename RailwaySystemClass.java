@@ -1,5 +1,6 @@
 
 //TO DO: IMPLEMENT QUEUE AND LINECOUNTER
+//TO DO: ALL METHODS
 
 //manages lines, train schedules and stations
 public class RailwaySystemClass implements RailwaySystem {
@@ -34,6 +35,10 @@ public class RailwaySystemClass implements RailwaySystem {
         return existsLine(name);
     }
 
+    public static boolean existsLine(String name)
+    {
+        return true;
+    }
 
     //---------------AUX METHODS-----------------
 
@@ -43,8 +48,4 @@ public class RailwaySystemClass implements RailwaySystem {
 
     }
 
-    private static boolean existsLine(String name)
-    {
-        return true;
-    }
 }
