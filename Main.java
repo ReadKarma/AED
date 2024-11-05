@@ -20,7 +20,7 @@ public class Main{
     public static final String BEST_COURSE = "MH"; //Melhor Horário
     public static final String QUIT = "TA"; //Terminar aplicação
 
-    //messages
+    //messages:
     public static final String QUIT_MESSAGE = "Aplicação terminada."; //Terminar aplicação
     public static final String COMMAND_ERROR = "?????????????????"; //erro
     public static final String LINE_NO_EXIST = "Linha inexistente."; // Inserção de linha sem sucesso

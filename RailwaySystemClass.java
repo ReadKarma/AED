@@ -27,11 +27,14 @@ public class RailwaySystemClass implements RailwaySystem {
 
     public boolean checkLineStation(String name)
     {
-
+        //if(existsLine()) 
+            //printline(name);
+            //return true
+        //else return false
         return existsLine(name);
     }
 
-    
+
     //---------------AUX METHODS-----------------
 
 
