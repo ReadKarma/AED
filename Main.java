@@ -22,7 +22,9 @@ public class Main{
 
     //messages
     public static final String QUIT_MESSAGE = "Aplicação terminada."; //Terminar aplicação
-    public static final String COMMAND_ERROR = "."; //Terminar aplicação
+    public static final String COMMAND_ERROR = "?????????????????"; //erro
+    public static final String IL_SUCESS = "Inserção de linha com sucesso."; // Inserção de linha com sucesso
+    public static final String IL_FAIL = "Linha existente."; // Inserção de linha sem sucesso
 
     public static void main(String[] args) {
 
@@ -48,7 +50,6 @@ public class Main{
                 case BEST_COURSE           -> {}
                 case QUIT                  -> System.out.println(QUIT_MESSAGE);
                 default                    -> System.out.println(COMMAND_ERROR);
-
             }
         }
         while(!command.equals(QUIT));
@@ -87,7 +88,7 @@ public class Main{
         while(in.hasNextLine()) //reads stations 
         {
             station[stationCounter] = in.nextLine().trim();
-            
+
             if(station[stationCounter].isEmpty()) break;
             stationCounter++;
         }
@@ -95,7 +96,8 @@ public class Main{
         String[] stationArgument = new String[stationCounter]; //array to pass as argument
         System.arraycopy(station, 0, stationArgument, 0, stationCounter);
 
-        railway.addLine(lineName, stationArgument); //add line to railwayclass object
+        if(railway.addLine(lineName, stationArgument)) System.out.println(IL_SUCESS);
+        else System.out.println(IL_FAIL);
 
     }
 }

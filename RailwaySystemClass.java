@@ -9,8 +9,9 @@ public class RailwaySystemClass implements RailwaySystem {
 
     }
     
-    public void addLine(String name, String[] stations) 
+    public boolean addLine(String name, String[] stations) 
     {
 
+        return false; //TO DO
     }
 }
