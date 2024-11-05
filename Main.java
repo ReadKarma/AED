@@ -28,6 +28,7 @@ public class Main{
 
         //variables
         Scanner in = new Scanner(System.in);
+        RailwaySystemClass railway = new RailwaySystemClass();
         String command;
 
         //command interpreter
@@ -35,39 +36,18 @@ public class Main{
         {
             command = getCommand(in);
             switch(command){
-                case INSERT_LINE:
 
-                    break;
-                case REMOVE_LINE:
-
-                    break;
-                case CHECK_LINE:
-
-                    break;
-                case CHECK_STATION:
-
-                    break;
-                case ADD_TIMETABLE:
-
-                    break;
-                case REMOVE_TIMETABLE:
-
-                    break;
-                case CHECK_LINE_TIMETABLES:
-
-                    break;
-                case STATION_TRAINS:
-
-                    break;
-                case BEST_COURSE:
-
-                    break;
-                case QUIT:
-                    System.out.println(QUIT_MESSAGE);
-                    break;
-                default:
-                    System.out.println(COMMAND_ERROR);
-                    break;
+                case INSERT_LINE           -> insertLine(in, railway);
+                case REMOVE_LINE           -> {}
+                case CHECK_LINE            -> {}
+                case CHECK_STATION         -> {}
+                case ADD_TIMETABLE         -> {}
+                case REMOVE_TIMETABLE      -> {}
+                case CHECK_LINE_TIMETABLES -> {}
+                case STATION_TRAINS        -> {}
+                case BEST_COURSE           -> {}
+                case QUIT                  -> System.out.println(QUIT_MESSAGE);
+                default                    -> System.out.println(COMMAND_ERROR);
 
             }
         }
@@ -82,12 +62,42 @@ public class Main{
 	* @param in Scanner object to read user input.
 	* @return The next command entered by the user, in uppercase.
 	**/
-    private static String getCommand(Scanner in) {
+    private static String getCommand(Scanner in)
+    {
 		String input;
 		
 		input = in.nextLine().toUpperCase();
 		return input;
 	}
+
+
+    /**
+	* Retrieves the next command from the user.
+	* @param in Scanner object to read user input.
+    * @param railway RailwaySystemClass object to manage railway system
+	**/
+    private static void insertLine(Scanner in, RailwaySystemClass railway)
+    {
+
+        //variables
+        String lineName = in.nextLine().trim(); 
+        String[] station = new String[500];
+        int stationCounter = 0; //number of stations in this array
+
+        while(in.hasNextLine()) //reads stations 
+        {
+            station[stationCounter] = in.nextLine().trim();
+            
+            if(station[stationCounter].isEmpty()) break;
+            stationCounter++;
+        }
+
+        String[] stationArgument = new String[stationCounter]; //array to pass as argument
+        System.arraycopy(station, 0, stationArgument, 0, stationCounter);
+
+        railway.addLine(lineName, stationArgument); //add line to railwayclass object
+
+    }
 }
 
 
