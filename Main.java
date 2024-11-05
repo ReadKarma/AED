@@ -133,8 +133,10 @@ public class Main{
 	**/
     private static void addTimeTable(Scanner in, RailwaySystemClass railway)
     {
-        //variables
         String lineName = in.nextLine().trim(); //line name
+        if(railway.existsLine(lineName)) System.out.println(LINE_NO_EXIST);
+
+
         int trainNumber = in.nextInt(); //train number
         in.nextLine();
 

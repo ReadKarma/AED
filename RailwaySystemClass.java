@@ -35,7 +35,7 @@ public class RailwaySystemClass implements RailwaySystem {
         return existsLine(name);
     }
 
-    public static boolean existsLine(String name)
+    public boolean existsLine(String name)
     {
         return true;
     }
