@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import dataStructures.List;
+import dataStructures.DoubleList;
+import dataStructures.Iterator;
 
 /**
 * @author João Pereirinha 64382 j.pereirinha@fct.campus.unl.pt
@@ -26,9 +29,10 @@ public class Main{
     public static final String COMMAND_ERROR = "?????????????????"; //erro
     public static final String LINE_NO_EXIST = "Linha inexistente."; // Inserção de linha sem sucesso
     public static final String IL_SUCESS = "Inserção de linha com sucesso."; // Inserção de linha com sucesso
-    public static final String IL_FAIL = "Linha existente."; // Inserção de linha com sucesso
-    public static final String RL_SUCESS = "Remoção de linha com sucesso."; // Remoção de linha com sucesso
-
+    public static final String IL_FAIL = "Linha existente."; // 
+    public static final String RL_SUCESS = "Remoção de linha com sucesso."; // 
+    public static final String IH_FAIL = "Horário inválido";
+    
     public static void main(String[] args) {
 
         //variables
@@ -68,7 +72,7 @@ public class Main{
     {
 		String input;
 		
-		input = in.nextLine().toUpperCase();
+		input = in.next().toUpperCase();
 		return input;
 	}
 
@@ -79,25 +83,26 @@ public class Main{
 	**/
     private static void insertLine(Scanner in, RailwaySystemClass railway)
     {
-
+    	
         //variables
         String lineName = in.nextLine().trim(); //line name
-        String[] station = new String[500];
-        int stationCounter = 0; //number of stations in this array
+        List<String> station = new DoubleList<String>();
 
         while(in.hasNextLine()) //reads stations 
         {
-            station[stationCounter] = in.nextLine().trim();
-
-            if(station[stationCounter].isEmpty()) break;
-            stationCounter++;
+        	String stationName = in.nextLine().trim();
+        	if(stationName.equals("")) break;
+            station.addLast(stationName);
         }
 
-        String[] stationArgument = new String[stationCounter]; //array to pass as argument
-        System.arraycopy(station, 0, stationArgument, 0, stationCounter);
-
-        if(railway.addLine(lineName, stationArgument)) System.out.println(IL_SUCESS); //sucess
-        else System.out.println(IL_FAIL); //fail
+        try 
+        {
+        	railway.addLine(lineName, station);
+        	System.out.println(IL_SUCESS);
+        } catch(ExistentLineException e) 
+        {
+        	System.out.println(IL_FAIL);
+        }
 
     }
 
@@ -110,8 +115,16 @@ public class Main{
     {
         String lineName = in.nextLine().trim(); //line name
     
-        if(railway.removeLine(lineName)) System.out.println(RL_SUCESS); //sucess
-        else System.out.println(LINE_NO_EXIST); //fail
+        try
+        {
+        	railway.removeLine(lineName);
+        	System.out.println(RL_SUCESS);
+        }
+        catch(InexistentLineException e)
+        {
+        	System.out.println(LINE_NO_EXIST);
+        }
+        
     }
     
     /**
@@ -123,7 +136,19 @@ public class Main{
 
         String lineName = in.nextLine().trim(); //line name
 
-        if(!railway.checkLineStation(lineName)) System.out.println(LINE_NO_EXIST); //fail
+        try
+        { 
+        	Iterator<String> it = railway.checkLineStation(lineName);
+        	
+        
+        	while(it.hasNext()) System.out.println(it.next());	
+        	
+        }
+        catch(InexistentLineException e)
+        {
+        	System.out.println(LINE_NO_EXIST);
+        }
+        
     }
 
     /**
@@ -134,15 +159,40 @@ public class Main{
     private static void addTimeTable(Scanner in, RailwaySystemClass railway)
     {
         String lineName = in.nextLine().trim(); //line name
+        List<String> station = new DoubleList<String>();
+        
         if(railway.existsLine(lineName)) System.out.println(LINE_NO_EXIST);
-
 
         int trainNumber = in.nextInt(); //train number
         in.nextLine();
-
         
+         while(in.hasNextLine())
+         {
+         	String line = in.nextLine();
+         	if(line.equals("")) break;
+         	station.addLast(line);
+         	
+         	
+         }
 
+        try
+        {
+        	railway.addTimeTable(lineName, trainNumber, station);
+        }
+        catch(InexistentLineException e)
+        {
+        	System.out.println(LINE_NO_EXIST);
+        }
+        catch(InvalidTimeTableException ee)
+        {
+        	System.out.println(IH_FAIL);
+        }
 
+    }
+    
+    private static String[] divideLineNTime(String line) {
+    	
+    	
     }
 }
 

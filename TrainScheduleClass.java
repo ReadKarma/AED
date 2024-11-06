@@ -2,13 +2,26 @@
 //train schedule, depart and arrival time at each station in a line
 public class TrainScheduleClass implements TrainSchedule {
     
-    String lineName;
-    int trainNumber;
+    private Line line;
+    private int trainNumber;
 
-    public TrainScheduleClass(String lineName, int trainNumber ) //add hh:mm (station & time list)
+    public TrainScheduleClass(Line line, int trainNumber)
     {
-        this.lineName = lineName;
+        this.line = line;
         this.trainNumber = trainNumber;
     }
+    
+    public Line getLine()
+    {
+    	
+    	return line;
+    }
+    
+    public int getTrainNumber()
+    {
+    	return trainNumber;
+    }
+    
 
+    
 }
