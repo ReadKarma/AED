@@ -10,3 +10,5 @@
 /ExistentLineException.class
 /InexistentLineException.class
 /InvalidTimeTableException.class
+/InexistentScheduleException.class
+/InexistentFirstStation.class

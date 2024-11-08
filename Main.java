@@ -31,7 +31,11 @@ public class Main{
     public static final String IL_SUCESS = "Inserção de linha com sucesso."; // Inserção de linha com sucesso
     public static final String IL_FAIL = "Linha existente."; // 
     public static final String RL_SUCESS = "Remoção de linha com sucesso."; // 
-    public static final String IH_FAIL = "Horário inválido";
+    public static final String INVALID_SCHEDULE = "Horário inválido";
+    public static final String IH_SUCESS = "Criação de horário com sucesso.";
+    public static final String RH_SUCESS = "Remoção de horário com sucesso.";
+    public static final String SCHEDULE_NO_EXIST = "Horário inexistente.";
+    public static final String FIRST_STATION_NO_EXIST = "Estação de partida inexistente.";
     
     public static void main(String[] args) {
 
@@ -51,8 +55,8 @@ public class Main{
                     case CHECK_LINE            -> checkLineStations(in, railway);
                     //case CHECK_STATION         -> {} //fase 2
                     case ADD_TIMETABLE         -> addTimeTable(in, railway);
-                    case REMOVE_TIMETABLE      -> {}
-                    case CHECK_LINE_TIMETABLES -> {}
+                    case REMOVE_TIMETABLE      -> removeTimeTable(in, railway);
+                    case CHECK_LINE_TIMETABLES -> checkLineSchedules(in, railway);
                     //case STATION_TRAINS        -> {} //fase 2
                     case BEST_COURSE           -> {}
                     case QUIT                  -> System.out.println(QUIT_MESSAGE);
@@ -166,18 +170,18 @@ public class Main{
         int trainNumber = in.nextInt(); //train number
         in.nextLine();
         
+        String line;
          while(in.hasNextLine())
          {
-         	String line = in.nextLine();
+         	line = in.nextLine();
          	if(line.equals("")) break;
          	station.addLast(line);
-         	
-         	
          }
 
         try
         {
         	railway.addTimeTable(lineName, trainNumber, station);
+        	System.out.println(IH_SUCESS);
         }
         catch(InexistentLineException e)
         {
@@ -185,15 +189,70 @@ public class Main{
         }
         catch(InvalidTimeTableException ee)
         {
-        	System.out.println(IH_FAIL);
+        	System.out.println(INVALID_SCHEDULE);
         }
 
     }
     
-    private static String[] divideLineNTime(String line) {
+    private static void removeTimeTable(Scanner in, RailwaySystemClass railway)
+    {
+    	String lineName = in.nextLine().trim(); //line name
+    	String line = in.nextLine(); // nome-estacao-partida hora-partida
     	
-    	
+    	try
+    	{
+    		railway.removeSchedule(lineName, line);
+    		System.out.println(RH_SUCESS);
+    	}
+    	catch(InexistentLineException e)
+    	{
+    		System.out.println(LINE_NO_EXIST);
+    	}
+    	catch(InexistentScheduleException r)
+    	{
+    		System.out.println(SCHEDULE_NO_EXIST);
+    	}
     }
+    
+    private static void checkLineSchedules(Scanner in, RailwaySystemClass railway)
+    {
+    	String lineName = in.nextLine().trim(); //line name
+    	String line = in.nextLine(); // nome-estacao-partida
+    	
+    	
+    	try //SUCESS
+    	{
+    		List<TrainScheduleClass> trains = railway.checkLineSchedules(lineName, line);
+    		Iterator<TrainScheduleClass> it = trains.iterator();
+    		TrainScheduleClass current;
+    		
+    		
+    		while(it.hasNext())
+    		{
+    			current = it.next();
+    			System.out.println(current.getTrainNumber());
+    			List<String[]> schedules = current.getSchedule();
+    			
+    			for(int i = 0; i < schedules.size(); i++)
+    			{
+    				String[] sch = schedules.get(i);
+    				System.out.println(sch[0] + " " + sch[1]);
+    			}
+    			
+    		}
+    		
+    		
+    	}
+    	catch(InexistentLineException e)
+    	{
+    		System.out.println(LINE_NO_EXIST);
+    	}
+    	catch(InexistentFirstStation r)
+    	{
+    		System.out.println(FIRST_STATION_NO_EXIST);
+    	}
+    }
+    
 }
 
 

@@ -10,6 +10,8 @@ import dataStructures.TwoWayIterator;
 public class RailwaySystemClass implements RailwaySystem {
 	
 	private List<Line> lines;
+	private static List<TrainScheduleClass> schedules;
+	
 	
 
     public RailwaySystemClass() //constructor
@@ -90,7 +92,7 @@ public class RailwaySystemClass implements RailwaySystem {
     	Iterator<String> itTime = times.iterator(); //ordem crescente
     	String lastTime = it.next();
     	
-    	while (itTime.hasNext())
+    	while (itTime.hasNext()) 
     	{
     		
     		String currentTime = it.next();
@@ -100,7 +102,7 @@ public class RailwaySystemClass implements RailwaySystem {
     	}
     	
     	Iterator<String> itStation = stationNames.iterator();
-    	TwoWayIterator<String> itLine = (TwoWayIterator)line.iterator();
+    	TwoWayIterator<String> itLine = (TwoWayIterator<String>)line.iterator();
     	String current = itStation.next();
     	boolean aux = current.equals(line.getLast());
     	
@@ -116,12 +118,74 @@ public class RailwaySystemClass implements RailwaySystem {
     	}
     	if(itStation.hasNext()) throw new InvalidTimeTableException();
     	
-    	//TrainSchedule timeTable = new TrainScheduleClass(lines.get(name) trainNumber);
-    	//TO DO: get Line by name method
+    	String auxString = timeTable.getFirst();
+    	String[] auxArray = separateSchedule(auxString);
+    	List<String[]> tT = new DoubleList<String[]>();
+    	tT.addLast(auxArray);
+    	
+    	for(int i = 1; i <= timeTable.size(); i++) //sends nome-estacao-n hora-n
+    	{
+    		
+    		auxString = timeTable.get(i + 1);
+    		auxArray = separateSchedule(auxString);
+    		tT = new DoubleList<String[]>();
+    	}
+    	
+    	TrainScheduleClass timeTables = new TrainScheduleClass(getLineByName(name), trainNumber, tT);
+    	schedules.addLast(timeTables);
+    	getLineByName(name).addTrainSchedule(schedules.getLast());
+    
+    }
+    
+    public void removeSchedule(String lineName, String lineAfter)
+    {
+    	if(!existsLine(lineName)) throw new InexistentLineException();
+    	
+    	String[] auxString = separateSchedule(lineAfter);
+    	String firstStation = auxString[0];
+    	String time = auxString[1];
+    	TrainScheduleClass current;
+    	Iterator<TrainScheduleClass> it = schedules.iterator();
+    	
+    	while(it.hasNext())
+    	{
+    		current = it.next();
+    		if(current.getFirstStation().equals(firstStation))
+    		{
+    			if(current.getStartTime().equals(time)) schedules.remove(current);
+    		}
+    	}
+    	//if it didnt find the schedule, it doesnt exist
+    	if(!it.hasNext()) throw new InexistentScheduleException();
+    }
+    
+    //returns an ordered list of schedules to print
+    public List<TrainScheduleClass> checkLineSchedules(String lineName, String firstStation)
+    {
+    	if(!existsLine(lineName)) throw new InexistentLineException();
+    	if(!existsFirstStation(lineName)) throw new InexistentFirstStation();
+    	
+    	List<TrainScheduleClass> trains = getLineByName(lineName).getTrainInThisLine();
+    	Iterator<TrainScheduleClass> it = trains.iterator();
+    	TrainScheduleClass current;
+    	
+    	while(it.hasNext())
+    	{
+    		current = it.next();
+    		if(!current.getFirstStation().equals(firstStation))
+    		{
+    			trains.remove(current);
+    		}
+    	}
+    	
+    	//order schedules
+    	List<TrainScheduleClass> aux = sortSchedules(trains);
+    	return aux;
     	
     }
 
-    public boolean existsLine(String name)
+
+	public boolean existsLine(String name)
     {
     	Iterator<Line> it = lines.iterator();
     	while(it.hasNext())
@@ -132,6 +196,19 @@ public class RailwaySystemClass implements RailwaySystem {
  
         return false;
     }
+	
+	private boolean existsFirstStation(String name)
+	{
+		Iterator<TrainScheduleClass> it = schedules.iterator();
+		
+		while(it.hasNext())
+		{
+			TrainScheduleClass current = it.next();
+			if(current.getFirstStation().equals(name)) return true;
+		}
+		
+		return false;
+	}
 
     //---------------AUX METHODS-----------------
 
@@ -168,6 +245,66 @@ public class RailwaySystemClass implements RailwaySystem {
     	
 		return false;
     }
+    
+
+    private Line getLineByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
+    /*private Line getLineByName(String name, List<Line> lines)
+    {
+    	Line current = lines.getFirst();
+    	
+    	for(int i = 1; i <= lines.size(); i++)
+    	{
+    		current = lines.get(i);
+    		if(current.getName().equals(name)) return current;
+    	}
+    	
+		return null; //never reaches if all the prerequesits are true
+    }*/
+    
+    private List<TrainScheduleClass> sortSchedules(List<TrainScheduleClass> order)
+    {
+    	int size = order.size();
+    	List<TrainScheduleClass> newOrder = order;
+    	
+    	for(int i = 0; i < (size - 1); i++)
+    	{
+    		for(int j = 0; j < (size - 1 - i); j++)
+    		{
+    			TrainScheduleClass current = newOrder.get(j);
+    			TrainScheduleClass next = newOrder.get(j + 1);
+    			
+    			if(current.getStartTime().compareTo(next.getStartTime()) > 0)
+    			{
+
+    				newOrder.remove(next);
+    				newOrder.add(j, next);
+    				
+    				newOrder.remove(current);
+    				newOrder.add(j + 1, current);
+    			}
+    		}
+    		
+    	}
+    	
+    	return newOrder;
+    }
+    
+    private String[] separateSchedule(String schedule)
+    {
+    	int lastSpace = schedule.lastIndexOf(" ");
+    	String[] aux = new String[2];
+    	
+    	aux[1] = schedule.substring(0, lastSpace).trim();
+    	aux[2] = schedule.substring(lastSpace + 1).trim();
+    	
+    	return aux;
+    }
+    
+    
     
 
 }

@@ -3,7 +3,7 @@ package dataStructures;
 public abstract class HashTable<K,V> implements Dictionary<K,V>{
 	
 	// Default size of the hash table.
-	 public static final int DEFAULT_CAPACITY = 50;
+	 public static final int DEFAULT_CAPACITY = 10000;
 	 
 	// Number of entries in the hash table.
 	 protected int currentSize;

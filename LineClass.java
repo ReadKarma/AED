@@ -6,6 +6,8 @@ public class LineClass implements Line {
     //variables
     private String name;
     private List<String> stations;
+    private List<TrainScheduleClass> trains; //for ez acess 
+    //private List<>
     //timetables (hash map?)
 
     public LineClass(String name, List<String> stations)
@@ -35,6 +37,16 @@ public class LineClass implements Line {
             return false;
         }
     	return ((LineClass)obj).getName().equals(name);
+    }
+    
+    public void addTrainSchedule(TrainScheduleClass newSchedule)
+    {
+    	trains.addLast(newSchedule);
+    }
+    
+    public List<TrainScheduleClass> getTrainInThisLine()
+    {
+    	return trains;
     }
     
 }
